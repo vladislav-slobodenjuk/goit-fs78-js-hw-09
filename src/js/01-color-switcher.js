@@ -3,3 +3,6 @@ function getRandomHexColor() {
     .toString(16)
     .padStart(6, 0)}`;
 }
+
+// <button type="button" data-start>Start</button>
+// <button type="button" data-stop>Stop</button>
