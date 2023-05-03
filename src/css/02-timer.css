@@ -1,0 +1,32 @@
+.timer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  max-width: 350px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 4px 8px;
+  min-width: 80px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+
+  font: inherit;
+  cursor: pointer;
+}
+
+input {
+  padding: 4px 8px;
+  font: inherit;
+  text-align: center;
+}

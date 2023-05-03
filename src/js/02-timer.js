@@ -1,12 +1,16 @@
 import flatpickr from 'flatpickr';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import 'flatpickr/dist/flatpickr.min.css';
 
-const inputEl = document.getElementById('datetime-picker');
-const startBtn = document.querySelector('[data-start]');
-const daysEl = document.querySelector('.value[data-days]');
-const hoursEl = document.querySelector('.value[data-hours]');
-const minutesEl = document.querySelector('.value[data-minutes]');
-const secondsEl = document.querySelector('.value[data-seconds]');
+const refs = {
+  inputEl: document.getElementById('datetime-picker'),
+  startBtn: document.querySelector('[data-start]'),
+  daysEl: document.querySelector('.value[data-days]'),
+  hoursEl: document.querySelector('.value[data-hours]'),
+  minutesEl: document.querySelector('.value[data-minutes]'),
+  secondsEl: document.querySelector('.value[data-seconds]'),
+};
+const { inputEl, startBtn, daysEl, hoursEl, minutesEl, secondsEl } = refs;
 
 let selectedDate;
 let timerId;
@@ -18,14 +22,20 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log('selected date:', selectedDates[0]);
-
-    const isInPast = selectedDates[0] - Date.now() <= 0;
-    if (isInPast) return alert('Please choose a date in the future');
-    selectedDate = selectedDates[0];
-    // if (timerId) return;
-    startBtn.removeAttribute('disabled');
+    OnCloseCallback(selectedDates);
   },
 };
+
+function OnCloseCallback(selectedDates) {
+  const isInPast = selectedDates[0] - Date.now() <= 0;
+  if (isInPast) {
+    startBtn.setAttribute('disabled', '');
+    return Notify.failure('Please choose a date in the future');
+  }
+  selectedDate = selectedDates[0];
+  // if (timerId) return;
+  startBtn.removeAttribute('disabled');
+}
 
 window.addEventListener('DOMContentLoaded', onload);
 startBtn.addEventListener('click', onStart);
@@ -35,18 +45,7 @@ function onload() {
   flatpickr(inputEl, options);
 }
 
-// startBtn.setAttribute('disabled', '');
-// flatpickr(inputEl, options);
-
 function onStart() {
-  // console.log(selectedDate);
-  // const currentDate = Date.now();
-  // const difference = targetDate - currentDate;
-  // if (difference <= 0) return alert('Please choose a date in the future');
-
-  // const values = convertMs(difference);
-  // const values = convertMs(date);
-  // console.log(values);
   startBtn.setAttribute('disabled', '');
   inputEl.setAttribute('disabled', '');
   timerId = setInterval(setValues, 1000, selectedDate);
@@ -55,8 +54,8 @@ function onStart() {
 function setValues(targetDate) {
   const difference = targetDate - Date.now();
   console.log('time left:', difference);
-  if (difference <= 0) return clearInterval(timerId); // stop at the end of countdown
 
+  if (difference <= 0) return clearInterval(timerId); // stop at the end of countdown
   const { days, hours, minutes, seconds } = convertMs(difference);
 
   daysEl.textContent = addLeadingZero(days);
@@ -66,9 +65,6 @@ function setValues(targetDate) {
 }
 
 function addLeadingZero(value) {
-  // console.log(String(value).padStart(2, '0'));
-  // console.log('aaa');
-  // return value.lenth < 2 ? String(value).padStart('0') : value;
   return String(value).padStart(2, '0');
 }
 
