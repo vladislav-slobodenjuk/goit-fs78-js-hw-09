@@ -46,6 +46,12 @@ function onload() {
 }
 
 function onStart() {
+  const isInPast = selectedDate - Date.now() <= 0;
+  if (isInPast) {
+    startBtn.setAttribute('disabled', '');
+    return Notify.failure('Please choose a date in the future');
+  }
+
   startBtn.setAttribute('disabled', '');
   inputEl.setAttribute('disabled', '');
   timerId = setInterval(setValues, 1000, selectedDate);
