@@ -33,7 +33,6 @@ function OnCloseCallback(selectedDates) {
     return Notify.failure('Please choose a date in the future');
   }
   selectedDate = selectedDates[0];
-  // if (timerId) return;
   startBtn.removeAttribute('disabled');
 }
 
@@ -61,7 +60,10 @@ function setValues(targetDate) {
   const difference = targetDate - Date.now();
   console.log('time left:', difference);
 
-  if (difference <= 0) return clearInterval(timerId); // stop at the end of countdown
+  if (difference <= 0) {
+    inputEl.removeAttribute('disabled');
+    return clearInterval(timerId);
+  } // stop at the end of countdown
   const { days, hours, minutes, seconds } = convertMs(difference);
 
   daysEl.textContent = addLeadingZero(days);
