@@ -29,30 +29,30 @@ const options = {
 function OnCloseCallback(selectedDates) {
   const isInPast = selectedDates[0] - Date.now() <= 0;
   if (isInPast) {
-    startBtn.setAttribute('disabled', '');
+    startBtn.disabled = true;
     return Notify.failure('Please choose a date in the future');
   }
   selectedDate = selectedDates[0];
-  startBtn.removeAttribute('disabled');
+  startBtn.disabled = false;
 }
 
 window.addEventListener('DOMContentLoaded', onload);
 startBtn.addEventListener('click', onStart);
 
 function onload() {
-  startBtn.setAttribute('disabled', '');
+  startBtn.disabled = true;
   flatpickr(inputEl, options);
 }
 
 function onStart() {
   const isInPast = selectedDate - Date.now() <= 0;
   if (isInPast) {
-    startBtn.setAttribute('disabled', '');
+    startBtn.disabled = true;
     return Notify.failure('Please choose a date in the future');
   }
 
-  startBtn.setAttribute('disabled', '');
-  inputEl.setAttribute('disabled', '');
+  startBtn.disabled = true;
+  inputEl.disabled = true;
   timerId = setInterval(setValues, 1000, selectedDate);
 }
 
@@ -61,7 +61,7 @@ function setValues(targetDate) {
   console.log('time left:', difference);
 
   if (difference <= 0) {
-    inputEl.removeAttribute('disabled');
+    inputEl.disabled = false;
     return clearInterval(timerId);
   } // stop at the end of countdown
   const { days, hours, minutes, seconds } = convertMs(difference);
